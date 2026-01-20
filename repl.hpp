@@ -57,7 +57,7 @@ public:
     }
 };
 
-class Exit : public BaseCommand<Exit, std::string>
+class Exit : public BaseCommand<Exit, void>
 {
 public:
     const std::string_view longName = "exit";
@@ -70,13 +70,12 @@ public:
         action_ = action;
     }
 
-    std::string operator()() const
+    void operator()() const
     {
         if (action_)
         {
             action_();
         }
-        return {};
     }
 
 private:
@@ -144,9 +143,8 @@ private:
         {
             (((!evaluated && (cmd.longName == expr.command ||
                                  cmd.shortName == expr.command))
-                     ? (evaluated = true,
-                           output_ << cmd.Execute(expr.args) << '\n')
-                     : output_),
+                     ? (evaluated = true, ExecuteAndPrint(cmd, expr.args))
+                     : void()),
                 ...);
         };
         std::apply(std::move(func), commands_);
@@ -204,6 +202,19 @@ private:
         if (names.size() < commandsCount * 2)
         {
             throw std::runtime_error("commands names conflict");
+        }
+    }
+
+    template<Command C>
+    void ExecuteAndPrint(C& cmd, const std::vector<std::string_view>& args)
+    {
+        if constexpr (!std::is_same_v<typename C::Return, void>)
+        {
+            output_ << cmd.Execute(args) << '\n';
+        }
+        else
+        {
+            cmd.Execute(args);
         }
     }
 

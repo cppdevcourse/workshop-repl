@@ -18,6 +18,7 @@ class BaseCommand
 {
 public:
     using Args = std::tuple<ParameterTypes...>;
+    using Return = ReturnType;
     static constexpr std::size_t arity = sizeof...(ParameterTypes);
 
     ReturnType Execute(const std::vector<std::string_view>& tokens) const
