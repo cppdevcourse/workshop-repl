@@ -37,13 +37,14 @@ public:
         { ((lines.insert(command_to_line(cmd))), ...); };
         std::apply(std::move(func), commands);
 
-        std::string output{};
+        std::string output{"Available commands:\n"};
         for (auto it = lines.cbegin(); it != lines.cend(); ++it)
         {
             if (it != lines.cbegin())
             {
                 output.push_back('\n');
             }
+            output.push_back('\t');
             output += *it;
         }
         return output;
