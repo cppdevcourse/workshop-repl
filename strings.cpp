@@ -35,9 +35,21 @@ public:
         throw std::invalid_argument("Character not found");
     }
 };
+
+class Length : public ::repl::BaseCommand<Length, std::size_t, std::string>
+{
+public:
+    const std::string_view longName = "length";
+    const std::string_view shortName = "ln";
+    Length() = default;
+    std::size_t operator()(const std::string& str) const
+    {
+        return str.size();
+    }
+};
 // TODO: добавьте классы команд
 
-using Repl = ::repl::Repl<Concat, Find>;
+using Repl = ::repl::Repl<Concat, Find, Length>;
 
 } // namespace strings
 } // namespace repl
