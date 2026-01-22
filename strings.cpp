@@ -47,9 +47,26 @@ public:
         return str.size();
     }
 };
+
+class AtIndex : public ::repl::BaseCommand<AtIndex, char, std::string, std::size_t>
+{
+public:
+    const std::string_view longName = "atindex";
+    const std::string_view shortName = "at";
+    AtIndex() = default;
+    std::size_t operator()(const std::string& str, const std::size_t index) const
+    {
+        if (index >= str.size())
+        {
+            throw std::invalid_argument("Index out of bounds");
+        }
+
+        return str[index];
+    }
+};
 // TODO: добавьте классы команд
 
-using Repl = ::repl::Repl<Concat, Find, Length>;
+using Repl = ::repl::Repl<Concat, Find, Length, AtIndex>;
 
 } // namespace strings
 } // namespace repl

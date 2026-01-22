@@ -53,6 +53,26 @@ struct ArgParser<char>
     }
 };
 
+template<>
+struct ArgParser<std::size_t>
+{
+    static std::size_t parse(std::string_view str)
+    {
+        try
+        {
+            return std::stoull(std::string{str});
+        }
+        catch (const std::invalid_argument& err)
+        {
+            // std::stof message is kind of stupid,
+            // we will replace it
+            std::ostringstream msg{};
+            msg << "failed to parse size_t from '" << str << '\'';
+            throw std::invalid_argument(msg.str());
+        }
+    }
+};
+
 // TODO: добавьте парсеры
 
 } // namespace repl
