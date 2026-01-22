@@ -40,7 +40,7 @@ class Length : public ::repl::BaseCommand<Length, std::size_t, std::string>
 {
 public:
     const std::string_view longName = "length";
-    const std::string_view shortName = "ln";
+    const std::string_view shortName = "len";
     Length() = default;
     std::size_t operator()(const std::string& str) const
     {
