@@ -40,6 +40,19 @@ struct ArgParser<std::string>
     }
 };
 
+template<>
+struct ArgParser<char>
+{
+    static char parse(std::string_view str)
+    {
+        if (str.size() != 1)
+        {
+            throw std::invalid_argument("Argument should be single char");
+        }
+        return str[0];
+    }
+};
+
 // TODO: добавьте парсеры
 
 } // namespace repl

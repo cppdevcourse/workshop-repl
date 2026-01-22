@@ -17,11 +17,27 @@ public:
     {
         return s1 + s2;
     }
+};
 
+class Find : public ::repl::BaseCommand<Find, std::size_t, std::string, char>
+{
+public:
+    const std::string_view longName = "find";
+    const std::string_view shortName = "fd";
+    Find() = default;
+    std::size_t operator()(const std::string& str, const char c) const
+    {
+        for (std::size_t i = 0; i < str.size(); i++)
+        {
+            if (str[i] == c)
+                return i;
+        }
+        throw std::invalid_argument("Character not found");
+    }
 };
 // TODO: добавьте классы команд
 
-using Repl = ::repl::Repl<Concat>;
+using Repl = ::repl::Repl<Concat, Find>;
 
 } // namespace strings
 } // namespace repl
