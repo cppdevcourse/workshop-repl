@@ -31,6 +31,15 @@ struct ArgParser<float>
     }
 };
 
+template<>
+struct ArgParser<std::string>
+{
+    static std::string parse(std::string_view str)
+    {
+        return std::string{str};
+    }
+};
+
 // TODO: добавьте парсеры
 
 } // namespace repl
