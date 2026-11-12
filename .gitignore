@@ -1,2 +1,4 @@
 build/
 .cache/
+# plaintext solution (after decryption)
+solution/solution.diff
