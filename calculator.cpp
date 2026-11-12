@@ -36,6 +36,8 @@ public:
     }
 };
 
+// TODO: добавьте команды для работы с комплексными числами
+
 using Repl = ::repl::Repl<Multiply, SquareRoot>;
 
 } // namespace calculator
