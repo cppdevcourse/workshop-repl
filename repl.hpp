@@ -117,12 +117,20 @@ public:
     {
         while (continue_)
         {
+            std::string line{};
+            PrintPrompt();
+            if (!std::getline(input_, line))
+            {
+                break;
+            }
+
             try
             {
-                std::string line{};
-                PrintPrompt();
-                std::getline(input_, line);
                 const auto expression = parse(line);
+                if (expression.command.empty())
+                {
+                    continue;
+                }
                 Evaluate(expression);
             }
             catch (const std::exception& err)
@@ -168,10 +176,15 @@ private:
         Expression expression{};
         std::size_t start = 0;
 
-        size_t pos = str.find(' ', start);
+        while (start < str.size() && str[start] == ' ')
+        {
+            ++start;
+        }
+
+        std::size_t pos = str.find(' ', start);
         if (pos == std::string_view::npos)
         {
-            expression.command = str;
+            expression.command = str.substr(start);
             return expression;
         }
         expression.command = str.substr(start, pos - start);
@@ -179,6 +192,14 @@ private:
 
         while (true)
         {
+            while (start < str.size() && str[start] == ' ')
+            {
+                ++start;
+            }
+            if (start == str.size())
+            {
+                break;
+            }
             pos = str.find(' ', start);
             if (pos == std::string_view::npos)
             {
@@ -194,7 +215,7 @@ private:
 
     void FindNamesConflicts()
     {
-        constexpr std::size_t commandsCount = sizeof...(Commands);
+        constexpr std::size_t commandsCount = sizeof...(Commands) + 2;
         std::set<std::string_view> names{};
         auto func = [&names](auto&... cmd)
         { ((names.insert(cmd.longName), names.insert(cmd.shortName)), ...); };
