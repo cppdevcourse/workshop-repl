@@ -28,6 +28,12 @@ struct ArgParser<float>
             msg << "failed to parse float from '" << str << '\'';
             throw std::invalid_argument(msg.str());
         }
+        catch (const std::out_of_range& err)
+        {
+            std::ostringstream msg{};
+            msg << "value is out of range for float: '" << str << '\'';
+            throw std::out_of_range(msg.str());
+        }
     }
 };
 

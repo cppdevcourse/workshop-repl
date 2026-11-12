@@ -1,8 +1,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <exception>
-#include <string_view>
 #include <iostream>
+#include <string_view>
 
 #include "command.hpp"
 #include "repl.hpp"
